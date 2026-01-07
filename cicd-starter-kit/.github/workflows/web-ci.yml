@@ -1,0 +1,84 @@
+# 🌐 WEB CI/CD PIPELINE
+# Builds and deploys a static site to GitHub Pages
+
+name: Web CI/CD
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'web-dashboard/**'
+  pull_request:
+    branches: [main]
+    paths:
+      - 'web-dashboard/**'
+  workflow_dispatch:
+
+# Permissions needed for GitHub Pages deployment
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+jobs:
+  build:
+    name: "🏗️ Build Web App"
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: "📦 Checkout"
+        uses: actions/checkout@v4
+      
+      - name: "🔍 Lint HTML"
+        run: |
+          # In real projects, you might use htmlhint or similar
+          echo "Checking HTML structure..."
+          grep -q "<!DOCTYPE html>" web-dashboard/index.html && echo "✅ Valid HTML5 doctype"
+      
+      - name: "🎨 Check CSS"
+        run: |
+          # In real projects, you might use stylelint
+          echo "Checking CSS..."
+          test -f web-dashboard/styles.css && echo "✅ Stylesheet exists"
+      
+      - name: "📜 Check JavaScript"
+        run: |
+          # In real projects, you'd use eslint
+          echo "Checking JavaScript..."
+          test -f web-dashboard/app.js && echo "✅ JavaScript file exists"
+      
+      - name: "📦 Package for deployment"
+        run: |
+          mkdir -p _site
+          cp -r web-dashboard/* _site/
+          echo "✅ Site packaged in _site/"
+          ls -la _site/
+      
+      - name: "📤 Upload artifact"
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site/
+
+  deploy:
+    name: "🚀 Deploy to GitHub Pages"
+    runs-on: ubuntu-latest
+    needs: build
+    
+    # Only deploy on push to main (not on PRs)
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    
+    steps:
+      - name: "🚀 Deploy to GitHub Pages"
+        id: deployment
+        uses: actions/deploy-pages@v4
+      
+      - name: "🎉 Deployment complete!"
+        run: |
+          echo "================================================"
+          echo "🌐 Your site is live!"
+          echo "URL: ${{ steps.deployment.outputs.page_url }}"
+          echo "================================================"

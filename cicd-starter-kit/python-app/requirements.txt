@@ -1,0 +1,6 @@
+# Python Dependencies for CI/CD Starter Kit
+# These are installed by the CI pipeline
+
+pytest>=7.0.0
+pytest-cov>=4.0.0
+flake8>=6.0.0

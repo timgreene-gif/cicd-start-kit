@@ -1,0 +1,104 @@
+# 🎓 LEARNING PIPELINE - Start Here!
+# This workflow teaches CI/CD basics step by step
+
+name: Learning Pipeline
+
+# TRIGGER: When does this run?
+# This runs on every push to main, OR when you manually trigger it
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:  # Allows manual trigger from Actions tab
+
+jobs:
+  # JOB 1: The basics
+  learn-the-basics:
+    name: "📚 Step 1 - Understand the Basics"
+    runs-on: ubuntu-latest  # This is a free Linux VM GitHub gives you
+    
+    steps:
+      # Each step is a task. They run in order.
+      
+      - name: "👋 Hello World"
+        run: echo "Hello Tim! Your first CI/CD pipeline is running!"
+      
+      - name: "🖥️ What machine are we on?"
+        run: |
+          echo "Operating System:"
+          uname -a
+          echo ""
+          echo "Current directory:"
+          pwd
+          echo ""
+          echo "Date/Time:"
+          date
+      
+      - name: "📦 Checkout your code"
+        uses: actions/checkout@v4
+        # This downloads YOUR repo code into the runner
+      
+      - name: "📂 See your files"
+        run: |
+          echo "Here are the files in your repo:"
+          ls -la
+  
+  # JOB 2: Learn about dependencies
+  learn-dependencies:
+    name: "📚 Step 2 - Dependencies & Environment"
+    runs-on: ubuntu-latest
+    needs: learn-the-basics  # This job waits for the first one
+    
+    steps:
+      - name: "🐍 Setup Python"
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      
+      - name: "✅ Verify Python"
+        run: |
+          python --version
+          pip --version
+      
+      - name: "💡 Key Insight"
+        run: |
+          echo "============================================"
+          echo "🧠 WHAT YOU LEARNED:"
+          echo "--------------------------------------------"
+          echo "1. Workflows are YAML files in .github/workflows/"
+          echo "2. Jobs run on fresh VMs (called 'runners')"
+          echo "3. Steps execute commands or use pre-built 'actions'"
+          echo "4. 'needs' creates dependencies between jobs"
+          echo "============================================"
+
+  # JOB 3: Simulate a real pipeline
+  simulate-real-pipeline:
+    name: "🚀 Step 3 - Real Pipeline Simulation"
+    runs-on: ubuntu-latest
+    needs: learn-dependencies
+    
+    steps:
+      - name: "📦 Checkout"
+        uses: actions/checkout@v4
+      
+      - name: "🔍 Lint (Check Code Quality)"
+        run: echo "✅ Linting passed! (In real life, this runs tools like flake8, eslint)"
+      
+      - name: "🧪 Test (Run Unit Tests)"
+        run: echo "✅ All 42 tests passed! (In real life, this runs pytest, jest, etc.)"
+      
+      - name: "🏗️ Build (Create Deployable Package)"
+        run: echo "✅ Build complete! (In real life, this compiles code or creates artifacts)"
+      
+      - name: "🚀 Deploy (Ship It!)"
+        run: |
+          echo "✅ Deployed to staging!"
+          echo ""
+          echo "🎉 CONGRATULATIONS!"
+          echo "You just simulated a full CI/CD pipeline!"
+          echo ""
+          echo "NEXT STEPS:"
+          echo "1. Look at python-ci.yml for a REAL Python pipeline"
+          echo "2. Look at web-ci.yml for web deployment"
+          echo "3. Break something on purpose and watch it fail!"

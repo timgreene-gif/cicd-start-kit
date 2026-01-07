@@ -1,0 +1,78 @@
+# 🐍 PYTHON CI PIPELINE
+# Real-world pipeline for Python projects
+
+name: Python CI
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'python-app/**'  # Only run when Python files change
+  pull_request:
+    branches: [main]
+    paths:
+      - 'python-app/**'
+
+jobs:
+  test:
+    name: "🧪 Test Python App"
+    runs-on: ubuntu-latest
+    
+    # Test on multiple Python versions (matrix strategy)
+    strategy:
+      matrix:
+        python-version: ['3.10', '3.11', '3.12']
+    
+    steps:
+      - name: "📦 Checkout code"
+        uses: actions/checkout@v4
+      
+      - name: "🐍 Setup Python ${{ matrix.python-version }}"
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+      
+      - name: "📥 Install dependencies"
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r python-app/requirements.txt
+      
+      - name: "🔍 Lint with flake8"
+        run: |
+          pip install flake8
+          # Stop if there are Python syntax errors or undefined names
+          flake8 python-app/src --count --select=E9,F63,F7,F82 --show-source --statistics
+          # Warnings (non-blocking)
+          flake8 python-app/src --count --exit-zero --max-complexity=10 --statistics
+      
+      - name: "🧪 Run tests with pytest"
+        run: |
+          pip install pytest pytest-cov
+          pytest python-app/tests -v --cov=python-app/src --cov-report=term-missing
+      
+      - name: "✅ Tests passed!"
+        run: echo "All tests passed on Python ${{ matrix.python-version }}!"
+
+  build:
+    name: "🏗️ Build Package"
+    runs-on: ubuntu-latest
+    needs: test  # Only build if tests pass
+    
+    steps:
+      - name: "📦 Checkout code"
+        uses: actions/checkout@v4
+      
+      - name: "🐍 Setup Python"
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      
+      - name: "🏗️ Build distribution"
+        run: |
+          pip install build
+          echo "In a real project, you'd run: python -m build"
+          echo "This creates wheel (.whl) and source distribution files"
+      
+      - name: "📤 Upload artifact"
+        # In real pipelines, you'd upload the built package
+        run: echo "Artifact would be uploaded here for deployment"
