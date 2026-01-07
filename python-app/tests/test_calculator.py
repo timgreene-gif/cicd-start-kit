@@ -104,6 +104,6 @@ class TestEdgeCases:
 
 # 🎓 TRY THIS: Uncomment the test below to see CI fail!
 # 
-# def test_intentional_failure():
+ def test_intentional_failure():
 #     """This test will fail - try it!"""
 #     assert 1 == 2, "This should fail and CI will catch it!"
