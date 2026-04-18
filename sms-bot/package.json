@@ -1,0 +1,23 @@
+{
+  "name": "sms-booking-bot",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Bilingual (EN/ES) SMS booking bot for a lawn-care business. Twilio + Claude + Google Calendar.",
+  "type": "module",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "start": "node src/index.js",
+    "dev": "node --watch src/index.js",
+    "test": "node --test tests"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.30.0",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "googleapis": "^140.0.0",
+    "twilio": "^5.3.0"
+  },
+  "devDependencies": {}
+}

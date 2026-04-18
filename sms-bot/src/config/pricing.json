@@ -1,0 +1,21 @@
+{
+  "currency": "USD",
+  "sizes": {
+    "small": { "label": "Small (<2,000 sqft)", "sqftMax": 2000 },
+    "medium": { "label": "Medium (2,000-5,000 sqft)", "sqftMax": 5000 },
+    "large": { "label": "Large (5,000-10,000 sqft)", "sqftMax": 10000 },
+    "xl": { "label": "XL (>10,000 sqft)", "sqftMax": null }
+  },
+  "services": {
+    "mow": { "label": "Mow only" },
+    "mow_edge_blow": { "label": "Mow + edge + blow" },
+    "full_service": { "label": "Mow + edge + blow + hedge trim + debris haul" }
+  },
+  "prices": {
+    "small":  { "mow": 35, "mow_edge_blow": 50,  "full_service": 75 },
+    "medium": { "mow": 55, "mow_edge_blow": 75,  "full_service": 110 },
+    "large":  { "mow": 85, "mow_edge_blow": 110, "full_service": 160 },
+    "xl":     { "mow": null, "mow_edge_blow": null, "full_service": null }
+  },
+  "xlPolicy": "offer_site_visit"
+}
