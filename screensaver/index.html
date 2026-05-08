@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hardware Screensaver</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="screensaver" id="screensaver">
+        <div class="grid-bg"></div>
+        <div class="scanlines"></div>
+
+        <div class="stage" id="stage"></div>
+
+        <div class="hud hud-top-left">
+            <span class="hud-bracket">[</span>
+            <span id="hud-status">SYSTEM ONLINE</span>
+            <span class="hud-bracket">]</span>
+        </div>
+        <div class="hud hud-top-right">
+            <span id="hud-clock">--:--:--</span>
+        </div>
+        <div class="hud hud-bottom-left">
+            <span id="hud-slide-id">UNIT 00 / 00</span>
+        </div>
+        <div class="hud hud-bottom-right">
+            <span class="dot"></span>
+            <span>LIVE</span>
+        </div>
+
+        <div class="ticker">
+            <div class="ticker-track" id="ticker-track"></div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
