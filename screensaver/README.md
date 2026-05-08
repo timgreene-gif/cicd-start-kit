@@ -56,6 +56,27 @@ const SLIDES = [
 `SLIDE_DURATION` (also in `app.js`) controls how long each slide is on screen,
 in milliseconds.
 
+## Package & ship to a customer
+
+After dropping in real images and editing copy, run:
+
+```bash
+./screensaver/package.sh
+```
+
+That produces `hardware-screensaver.zip` at the repo root (~a few KB plus
+images). Send the zip to the customer with this one-liner:
+
+> Unzip, double-click `screensaver/index.html`, press **F11** for full-screen.
+> Press **Esc** to exit. Works in Chrome, Edge, Firefox, Safari — no install.
+
+For a kiosk display (lobby screen, trade-show monitor), launch Chrome in kiosk
+mode at boot:
+
+```bash
+chrome --kiosk file:///path/to/screensaver/index.html
+```
+
 ## Customize the look
 
 Color and timing variables live at the top of `screensaver/styles.css`:
