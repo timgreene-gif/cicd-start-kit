@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VAULT-TEC OVERSEER TERMINAL // Fallout DM Toolkit</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="crt">
+        <div class="scanlines"></div>
+        <div class="flicker"></div>
+
+        <header class="terminal-header">
+            <div class="boot-line">ROBCO INDUSTRIES (TM) TERMLINK PROTOCOL</div>
+            <div class="boot-line">VAULT-TEC OVERSEER TERMINAL v3.07.21</div>
+            <div class="boot-line">SESSION: <span id="session-date"></span> // USER: OVERSEER</div>
+            <h1 class="title">&gt;&gt; FALLOUT DM TOOLKIT &lt;&lt;</h1>
+            <div class="subtitle">Dungeon Master Companion for the Wasteland</div>
+        </header>
+
+        <nav class="tabs" id="tabs">
+            <button class="tab active" data-tab="dice">[1] DICE</button>
+            <button class="tab" data-tab="initiative">[2] V.A.T.S.</button>
+            <button class="tab" data-tab="npc">[3] NPC GEN</button>
+            <button class="tab" data-tab="loot">[4] LOOT</button>
+            <button class="tab" data-tab="encounter">[5] ENCOUNTERS</button>
+            <button class="tab" data-tab="settlement">[6] SETTLEMENTS</button>
+            <button class="tab" data-tab="quest">[7] QUEST HOOKS</button>
+            <button class="tab" data-tab="conditions">[8] STATUS</button>
+            <button class="tab" data-tab="notes">[9] LOGBOOK</button>
+            <button class="tab" data-tab="heroes">[0] HERO PROMPTS</button>
+        </nav>
+
+        <main class="content">
+
+            <section class="panel active" id="tab-dice">
+                <h2>&gt; DICE ROLLER // S.P.E.C.I.A.L. CHECKS</h2>
+                <div class="card">
+                    <div class="row">
+                        <button class="big-btn" data-die="20">d20</button>
+                        <button class="big-btn" data-die="100">d100</button>
+                        <button class="big-btn" data-die="12">d12</button>
+                        <button class="big-btn" data-die="10">d10</button>
+                        <button class="big-btn" data-die="8">d8</button>
+                        <button class="big-btn" data-die="6">d6</button>
+                        <button class="big-btn" data-die="4">d4</button>
+                    </div>
+                    <div class="row">
+                        <label>Quantity: <input type="number" id="dice-qty" value="1" min="1" max="20"></label>
+                        <label>Modifier: <input type="number" id="dice-mod" value="0"></label>
+                        <button class="big-btn alt" id="custom-roll">ROLL CUSTOM</button>
+                        <input type="text" id="custom-formula" placeholder="e.g. 2d6+3" class="input-wide">
+                        <button class="big-btn alt" id="formula-roll">PARSE &amp; ROLL</button>
+                    </div>
+                    <div class="dice-result" id="dice-result">&gt; AWAITING ROLL...</div>
+                </div>
+
+                <div class="card">
+                    <h3>&gt; S.P.E.C.I.A.L. ATTRIBUTE CHECK</h3>
+                    <div class="row">
+                        <select id="special-attr">
+                            <option>STRENGTH</option>
+                            <option>PERCEPTION</option>
+                            <option>ENDURANCE</option>
+                            <option>CHARISMA</option>
+                            <option>INTELLIGENCE</option>
+                            <option>AGILITY</option>
+                            <option>LUCK</option>
+                        </select>
+                        <label>Score: <input type="number" id="special-score" value="5" min="1" max="10"></label>
+                        <label>Difficulty:
+                            <select id="special-diff">
+                                <option value="0">Easy (+0)</option>
+                                <option value="-2">Average (-2)</option>
+                                <option value="-4">Difficult (-4)</option>
+                                <option value="-6">Heroic (-6)</option>
+                                <option value="-8">Nightmare (-8)</option>
+                            </select>
+                        </label>
+                        <button class="big-btn alt" id="roll-special">ROLL CHECK</button>
+                    </div>
+                    <div class="dice-result" id="special-result">&gt; SELECT ATTRIBUTE...</div>
+                </div>
+            </section>
+
+            <section class="panel" id="tab-initiative">
+                <h2>&gt; V.A.T.S. // INITIATIVE TRACKER</h2>
+                <div class="card">
+                    <div class="row">
+                        <input type="text" id="init-name" placeholder="Combatant name">
+                        <input type="number" id="init-roll" placeholder="Initiative" class="narrow">
+                        <input type="number" id="init-hp" placeholder="HP" class="narrow">
+                        <input type="number" id="init-ac" placeholder="DR/AC" class="narrow">
+                        <button class="big-btn alt" id="add-combatant">+ ADD</button>
+                        <button class="big-btn" id="next-turn">NEXT TURN ►</button>
+                        <button class="big-btn danger" id="clear-init">CLEAR ALL</button>
+                    </div>
+                    <div class="round-info">ROUND: <span id="round-num">1</span></div>
+                    <table class="combat-table">
+                        <thead>
+                            <tr><th>#</th><th>NAME</th><th>INIT</th><th>HP</th><th>DR</th><th>STATUS</th><th>ACTIONS</th></tr>
+                        </thead>
+                        <tbody id="init-list"></tbody>
+                    </table>
+                </div>
+            </section>
+
+            <section class="panel" id="tab-npc">
+                <h2>&gt; WASTELANDER PERSONNEL GENERATOR</h2>
+                <div class="card">
+                    <div class="row">
+                        <label>Faction:
+                            <select id="npc-faction">
+                                <option value="random">Random</option>
+                                <option value="wastelander">Wastelander</option>
+                                <option value="raider">Raider</option>
+                                <option value="brotherhood">Brotherhood of Steel</option>
+                                <option value="enclave">Enclave</option>
+                                <option value="ncr">NCR</option>
+                                <option value="legion">Caesar's Legion</option>
+                                <option value="institute">The Institute</option>
+                                <option value="ghoul">Ghoul</option>
+                                <option value="supermutant">Super Mutant</option>
+                                <option value="vault">Vault Dweller</option>
+                                <option value="trader">Caravan Trader</option>
+                            </select>
+                        </label>
+                        <button class="big-btn alt" id="gen-npc">GENERATE NPC</button>
+                        <button class="big-btn" id="gen-npc-party">GEN 5 NPCs</button>
+                    </div>
+                    <div class="output" id="npc-output">&gt; NO PERSONNEL FILES LOADED...</div>
+                </div>
+            </section>
+
+            <section class="panel" id="tab-loot">
+                <h2>&gt; SALVAGE &amp; LOOT GENERATOR</h2>
+                <div class="card">
+                    <div class="row">
+                        <label>Container Type:
+                            <select id="loot-type">
+                                <option value="random">Random</option>
+                                <option value="raider">Raider Corpse</option>
+                                <option value="ammobox">Ammo Box</option>
+                                <option value="firstaid">First Aid Box</option>
+                                <option value="safe">Safe / Strongbox</option>
+                                <option value="toolbox">Tool Box</option>
+                                <option value="desk">Desk / Filing</option>
+                                <option value="mailbox">Mailbox</option>
+                                <option value="fridge">Refrigerator</option>
+                                <option value="brotherhood">Brotherhood Cache</option>
+                                <option value="vault">Vault-Tec Storage</option>
+                                <option value="dumpster">Trash / Dumpster</option>
+                            </select>
+                        </label>
+                        <label>Tier:
+                            <select id="loot-tier">
+                                <option value="1">I - Common</option>
+                                <option value="2">II - Uncommon</option>
+                                <option value="3">III - Rare</option>
+                                <option value="4">IV - Legendary</option>
+                            </select>
+                        </label>
+                        <button class="big-btn alt" id="gen-loot">ROLL LOOT</button>
+                    </div>
+                    <div class="output" id="loot-output">&gt; CONTAINER UNSEARCHED...</div>
+                </div>
+            </section>
+
+            <section class="panel" id="tab-encounter">
+                <h2>&gt; WASTELAND ENCOUNTER GENERATOR</h2>
+                <div class="card">
+                    <div class="row">
+                        <label>Region:
+                            <select id="enc-region">
+                                <option value="random">Random</option>
+                                <option value="wasteland">Open Wasteland</option>
+                                <option value="city">Urban Ruins</option>
+                                <option value="vault">Vault Interior</option>
+                                <option value="metro">Metro Tunnels</option>
+                                <option value="forest">Glowing Forest</option>
+                                <option value="coast">Coastal Ruins</option>
+                                <option value="desert">Mojave Desert</option>
+                                <option value="commonwealth">The Commonwealth</option>
+                                <option value="capital">Capital Wasteland</option>
+                            </select>
+                        </label>
+                        <label>Threat:
+                            <select id="enc-threat">
+                                <option value="1">Low</option>
+                                <option value="2">Moderate</option>
+                                <option value="3">Severe</option>
+                                <option value="4">Deathclaw-Tier</option>
+                            </select>
+                        </label>
+                        <button class="big-btn alt" id="gen-encounter">ROLL ENCOUNTER</button>
+                    </div>
+                    <div class="output" id="enc-output">&gt; SCANNING WASTES...</div>
+                </div>
+            </section>
+
+            <section class="panel" id="tab-settlement">
+                <h2>&gt; SETTLEMENT / LOCATION GENERATOR</h2>
+                <div class="card">
+                    <div class="row">
+                        <button class="big-btn alt" id="gen-settlement">GENERATE SETTLEMENT</button>
+                        <button class="big-btn" id="gen-poi">GENERATE POI</button>
+                    </div>
+                    <div class="output" id="settlement-output">&gt; UNCHARTED TERRITORY...</div>
+                </div>
+            </section>
+
+            <section class="panel" id="tab-quest">
+                <h2>&gt; QUEST HOOK / PLOT GENERATOR</h2>
+                <div class="card">
+                    <div class="row">
+                        <label>Tone:
+                            <select id="quest-tone">
+                                <option value="random">Random</option>
+                                <option value="rescue">Rescue</option>
+                                <option value="combat">Combat</option>
+                                <option value="mystery">Mystery</option>
+                                <option value="moral">Moral Dilemma</option>
+                                <option value="exploration">Exploration</option>
+                                <option value="faction">Faction Politics</option>
+                                <option value="horror">Horror</option>
+                            </select>
+                        </label>
+                        <button class="big-btn alt" id="gen-quest">GENERATE HOOK</button>
+                        <button class="big-btn" id="gen-quest-three">GEN 3 HOOKS</button>
+                    </div>
+                    <div class="output" id="quest-output">&gt; AWAITING ORDERS FROM OVERSEER...</div>
+                </div>
+            </section>
+
+            <section class="panel" id="tab-conditions">
+                <h2>&gt; PIP-BOY STATUS &amp; CONDITION TRACKER</h2>
+                <div class="card">
+                    <div class="row">
+                        <input type="text" id="cond-name" placeholder="Character name">
+                        <button class="big-btn alt" id="add-character">+ ADD CHARACTER</button>
+                    </div>
+                    <div id="character-list" class="character-list"></div>
+                </div>
+            </section>
+
+            <section class="panel" id="tab-notes">
+                <h2>&gt; SESSION LOGBOOK</h2>
+                <div class="card">
+                    <div class="row">
+                        <input type="text" id="note-title" placeholder="Entry title" class="input-wide">
+                        <button class="big-btn alt" id="add-note">+ LOG ENTRY</button>
+                        <button class="big-btn" id="export-notes">EXPORT .TXT</button>
+                        <button class="big-btn danger" id="clear-notes">PURGE LOG</button>
+                    </div>
+                    <textarea id="note-body" placeholder="Detail your session notes here, Overseer..."></textarea>
+                    <div id="notes-list" class="notes-list"></div>
+                </div>
+            </section>
+
+            <section class="panel" id="tab-heroes">
+                <h2>&gt; HERO IMAGE PROMPT GENERATOR</h2>
+                <p class="hint">&gt; Drop these prompts into your favorite AI image generator for portraits, banners, and key art.</p>
+                <div class="card">
+                    <div class="row">
+                        <button class="big-btn alt" id="gen-hero-prompt">GENERATE HERO PROMPT</button>
+                        <button class="big-btn" id="gen-hero-all">GENERATE 8 PROMPTS</button>
+                        <button class="big-btn" id="copy-all-prompts">COPY ALL</button>
+                    </div>
+                    <div class="output" id="hero-output">&gt; STANDBY FOR IMAGE BRIEFING...</div>
+                </div>
+
+                <div class="card">
+                    <h3>&gt; CURATED HERO &amp; BANNER PROMPTS</h3>
+                    <div id="curated-prompts" class="prompt-grid"></div>
+                </div>
+            </section>
+
+        </main>
+
+        <footer class="terminal-footer">
+            <span>&gt; PRESS [1-9,0] TO SWITCH MODULES</span>
+            <span>&gt; THANK YOU FOR USING ROBCO TERMLINK</span>
+            <span class="blink">█</span>
+        </footer>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
